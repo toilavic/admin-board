@@ -1,14 +1,21 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react'
 import Login from './components/auth/Login'
+import { BrowserRouter as Router } from 'react-router-dom';
 
-function App() {
-  return (
-        <Router>
-          <div>
-            <Login/>
-          </div>
-        </Router>
-    )
+interface Props {
+
 }
 
-export default App;
+function App(props: Props) {
+  const { } = props
+
+  return (
+    <Router>
+      <div>
+        <Login/>
+      </div>
+    </Router>
+  )
+}
+
+export default App
