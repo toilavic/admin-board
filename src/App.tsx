@@ -1,19 +1,15 @@
 import React from 'react'
-import Login from './components/auth/Login'
+import Main from './components/Main'
 import { BrowserRouter as Router } from 'react-router-dom';
 
 interface Props {
 
 }
 
-function App(props: Props) {
-  const { } = props
-
+const App : React.FC<Props>= ( {  } ) => {
   return (
     <Router>
-      <div>
-        <Login/>
-      </div>
+        <Main/>
     </Router>
   )
 }
