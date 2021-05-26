@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom'
-import {Typography, Paper, Grid, TextField, CssBaseline, Button, Avatar } from '@material-ui/core';
+import { Typography, Paper, Grid, TextField, CssBaseline, Button, Avatar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "./useForm";
-
-import {Post} from '../../api/APILogin'
+import APILogin from '../../api/APILogin'
 
 interface Props { }
+
+interface userInfo {
+    token: string,
+    refreshToken: string,
+    user: userDetails
+}
+
+interface userDetails {
+    id: number,
+    name: string,
+    email: string,
+    permissionLevel: string
+}
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 const Login: React.FC<Props> = ({ }) => {
 
     const initialState = {
-        username: "",
+        email: "",
         password: "",
     };
 
@@ -53,10 +66,24 @@ const Login: React.FC<Props> = ({ }) => {
         initialState
     );
 
-    async function loginUserCallback() {
-        // send "values" to database
-        console.log(values)
-        Post.login(values)
+    function loginUserCallback() {
+        APILogin(values)
+            .then((data) => {
+                if (data.status === 401) {
+                    const message: string = data.data
+                    alert(message)
+                } else {
+                    const userInfo: userInfo = data.data
+                    if (userInfo) {
+                        if (userInfo.user.permissionLevel === "admin") {
+                            localStorage.setItem("token", userInfo.token)
+                            localStorage.setItem("refreshToken", userInfo.refreshToken)
+                        } else {
+                            alert('you are not admin')
+                        }
+                    }
+                }
+            })
     }
 
     const classes = useStyles();
@@ -83,7 +110,7 @@ const Login: React.FC<Props> = ({ }) => {
                             fullWidth
                             id="email"
                             label="Username"
-                            name="username"
+                            name="email"
                             onChange={onChange}
                             autoComplete="email"
                             autoFocus
@@ -109,18 +136,6 @@ const Login: React.FC<Props> = ({ }) => {
                         >
                             Sign In
               </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link to="#">
-                                    Forgot password?
-                  </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link to="/register">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
                 </div>
             </Grid>
