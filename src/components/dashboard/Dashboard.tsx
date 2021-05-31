@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import AppBar from './Appbar'
 
 interface Props {
@@ -5,6 +6,13 @@ interface Props {
 }
 
 const Dashboard: React.FC<Props> = () => {
+
+    
+
+    useEffect(() => {
+
+    })
+
     return (
         <>
             <AppBar/>

@@ -1,83 +1,89 @@
 import React, { useEffect } from 'react';
+import { Redirect } from "react-router-dom";
 import { appBarTheme } from './appBarTheme'
 import clsx from 'clsx';
-import { Link } from 'react-router-dom'
-import { useTheme } from '@material-ui/core/styles';
-import { Drawer, Button, CssBaseline, AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Navbar from './layout/Navbar'
+import Sidebar from './layout/Sidebar'
+import AppContent from './AppContent'
+import APIRefreshToken from '../../api/APIRefreshToken'
 
-interface Props { }
+interface Props {
+}
 
-// const useStyles = appBarTheme.useStyles;
-
-const Appbar: React.FC<Props> = ( {} ) => {
+const Appbar: React.FC<Props> = ({
+}) => {
 
     const classes = appBarTheme();
-    const theme = useTheme();
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => setOpen(true);
 
     const handleDrawerClose = () => setOpen(false);
 
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, open && classes.hide)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap>
-                        {/* <Link to={props.status ? '/devices' : "/"} className="linkBtn">
-                  {username}
-                </Link> */}
-                    </Typography>
-                    <Button href="/" style={{ marginLeft: '80%', fontSize: 16 }} color="inherit">
-                        Log-out</Button> : ""
-            </Toolbar>
-            </AppBar>
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.drawerHeader}>
-                    <IconButton color="inherit" onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                {/* <Locations setDevice={props.setDevice} checkToken={props.checkToken} port={props.port} status={props.status} /> */}
-            </Drawer>
-            <main
-                className={clsx(classes.content, {
-                    [classes.contentShift]: open,
-                })}
-            >
-                <div className={classes.drawerHeader} />
-                <h1>Here is the dashboard</h1>
+    const onLogOut = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+    }
+    const getNewToken = () => {
+        var rToken = localStorage.getItem('refreshToken');
+        APIRefreshToken(rToken)
+            .then((results) => {
+                if (results === 401 || results === 403) {
+                    alert('Please login!')
+                    onLogOut()
+                    window.location.reload(false)
+                } else {
+                    localStorage.setItem('token', results.token)
+                }
+            })
+            .catch(error => console.error(error))
+    }
 
-            </main>
-        </div>
-    );
+    useEffect(() => {
+        const interval = setInterval(() => {
+            var token = localStorage.getItem('token');
+                if(token !== null) {
+                    getNewToken()
+                    console.log('This will run every 30 seconds!');
+                }
+            }, 30000);
+            return () => clearInterval(interval);
+    })
+
+    const TOKEN = localStorage.getItem('token')
+
+    if (TOKEN) {
+        return (
+            <div className={classes.root}>
+
+                <Navbar
+                    open={open}
+                    handleDrawerOpen={handleDrawerOpen}
+                    onLogOut={onLogOut}
+                />
+
+                <Sidebar
+                    open={open}
+                    handleDrawerClose={handleDrawerClose}
+                />
+
+                <main
+                    className={clsx(classes.content, {
+                        [classes.contentShift]: open,
+                    })}
+                >
+                    <div className={classes.drawerHeader} />
+
+                    {/* MAIN CONTENT */}
+                    <AppContent />
+
+                </main>
+            </div>
+        );
+    } else return (
+        <><Redirect to='/' /></>
+    )
 }
 
 export default Appbar
