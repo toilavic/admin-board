@@ -28,6 +28,7 @@ const onCellClicked = (params: any) => {
         let action = params.event.target.dataset.action;
 
         if (action === "edit") {
+            
             params.api.startEditingCell({
                 rowIndex: params.node.rowIndex,
                 // gets the first columnKey
@@ -42,6 +43,7 @@ const onCellClicked = (params: any) => {
         }
 
         if (action === "update") {
+            console.log('update click')
             params.api.stopEditing(false);
         }
 

@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "^4.11.2",
+    "@sweetalert/with-react": "^0.1.1",
+    "@types/sweetalert": "^2.0.4",
     "ag-grid-community": "^25.3.0",
     "ag-grid-enterprise": "^25.3.0",
     "ag-grid-react": "^25.3.0",
@@ -12,7 +14,9 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "reactjs-popup": "^2.0.4",
+    "sweetalert": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
