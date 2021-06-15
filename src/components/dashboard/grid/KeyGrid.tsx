@@ -3,7 +3,8 @@ import {
     actionCellRenderer,
     onCellClicked,
     onRowEditingStarted,
-    onRowEditingStopped
+    onRowEditingStopped,
+    onClickEdit
 } from './ActionGrid'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -13,51 +14,58 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import swal from 'sweetalert';
 
 import APIGetKeys from '../../../api/APIGetKeys'
+import APIUpdateKey from '../../../api/APIUpdateKey'
+
 
 interface Props { }
 
 const initColumnDefs = [
-    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false },
-    { headerName: 'Key', field: 'key', sortable: true, filter: true, editable: false },
-    { headerName: 'Name', field: 'name', sortable: true, filter: true },
-    { headerName: 'Owner', field: 'owner', sortable: true, filter: true },
+    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false},
+    { headerName: 'Key', field: 'key', sortable: true, filter: true, editable: false, width: 400 },
+    { headerName: 'Name', field: 'name', sortable: true, filter: true,  cellRenderer: onClickEdit() },
+    { headerName: 'Owner', field: 'owner', sortable: true, filter: true, editable: false },
     {
-        headerName: 'Expires at', field: 'expiresAt', sortable: true, filter: true, valueFormatter: (params: any) => {
+        headerName: 'Expires at', field: 'expiresAt', sortable: true, filter: true,  cellRenderer: onClickEdit(),
+        valueFormatter: (params: any) => {
             var localDateTime = new Date(params.value).toLocaleDateString();
             return localDateTime;
         }
     },
     {
-        headerName: "action",
+        headerName: "Action",
         minWidth: 150,
         cellRenderer: actionCellRenderer,
         editable: false,
-        colId: "action"
+        colId: "action",
+        width: 80
     }
 ]
 
 const defaultColDef = {
-    editable: true
+    editable: true,
+    width: 220,
 }
 
 const onRowValueChanged = (event: any) => {
-    var expiredAt = new Date(event.data.expiresAt).toLocaleDateString();
-    
+    // var expiredAt = new Date(event.data.expiresAt).toLocaleDateString();
+    console.log(event.data)
     swal({
-        title: "Are you sure?",
-        text: "On my way creating....",
+        title: "Are you sure to update this row?",
         icon: "warning",
+        // @ts-ignore
+        buttons: true,
         dangerMode: true,
     })
-        // .then(willDelete => {
-        //     if (willDelete) {
-        //         swal("Deleted!", "Your imaginary file has been deleted!", "success");
-        //     }
-        // });
-
+        .then(willDelete => {
+            if (willDelete) {
+                const { id, name, expiresAt } = event.data
+                APIUpdateKey(id, name, expiresAt)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err))
+                swal("Updated!", "Your key has been updated!", "success");
+            }
+        });
 }
-
-const initRowData = null;
 
 const KeyGrid: React.FC<Props> = ({ }) => {
 
@@ -73,8 +81,8 @@ const KeyGrid: React.FC<Props> = ({ }) => {
     return (
         <div className="ag-theme-alpine tcl-mask"
             style={{
-                width: '90%',
-                height: 300
+                width: '70%',
+                height: '500px'
             }}
         >
             <AgGridReact
