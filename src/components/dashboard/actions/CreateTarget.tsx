@@ -21,7 +21,7 @@ function CreateTarget(props: Props) {
       .then((results: any) => {
         if (results.status === 400) alert(results.data)
         else {
-          alert('created success')
+          alert('created success !')
           window.location.reload(false)
         }
       })
