@@ -76,7 +76,7 @@ const Appbar: React.FC<Props> = ({
                     <div className={classes.drawerHeader} />
 
                     {/* MAIN CONTENT */}
-                    <AppContent />
+                    <AppContent getNewToken = {getNewToken} />
 
                 </main>
             </div>

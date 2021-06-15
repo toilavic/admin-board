@@ -1,0 +1,31 @@
+.action-button__edit {
+    border-radius: 2rem;
+    background: blue;
+}
+
+.fa {
+    padding: 5px 5px;
+    margin-left: 25px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.fa:first-child {
+    margin-left: 0px;
+}
+
+.ag-row-hover {
+    /* putting in !important so it overrides the theme's styling as it hovers the row also */
+    background-color: #dfdfff !important;
+}
+
+.ag-column-hover {
+    background-color: #dfffdf;
+}
+
+#theButton {
+    border: none;
+    background-color: inherit;
+    border-radius: 20px;
+    margin-top: 2px;
+}
