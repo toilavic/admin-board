@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react';
-import AppBar from './Appbar'
 import AppContent from './AppContent';
 import APIRefreshToken from '../../api/APIRefreshToken'
 
-import { appBarTheme } from './appBarTheme'
-import clsx from 'clsx';
-
 interface Props {
-
+    open: boolean
 }
 
-const Dashboard: React.FC<Props> = () => {
-
-    const classes = appBarTheme();
+const Dashboard: React.FC<Props> = ({
+    open
+}) => {
 
     const onLogOut = () => {
         localStorage.removeItem("token");
@@ -34,12 +30,6 @@ const Dashboard: React.FC<Props> = () => {
             .catch(error => console.error(error))
     }
 
-    const [open, setOpen] = React.useState(true);
-
-    const handleDrawerOpen = () => setOpen(true);
-
-    const handleDrawerClose = () => setOpen(false);
-
     useEffect(() => {
         const interval = setInterval(() => {
             var token = localStorage.getItem('token');
@@ -53,17 +43,7 @@ const Dashboard: React.FC<Props> = () => {
 
     return (
         <>
-            {/* <AppBar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose = {handleDrawerClose} onLogOut={onLogOut}/> */}
-            <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    {/* MAIN CONTENT */}
-                    <AppContent getNewToken = {getNewToken} />
-
-                </main>
-            
+            <AppContent getNewToken={getNewToken} />
         </>
     )
 }

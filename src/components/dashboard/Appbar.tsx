@@ -8,14 +8,12 @@ import AppContent from './AppContent'
 import APIRefreshToken from '../../api/APIRefreshToken'
 
 interface Props {
-    onLogOut: () => void;
     open: boolean;
     handleDrawerOpen: () => void;
     handleDrawerClose: () => void
 }
 
 const Appbar: React.FC<Props> = ({
-    onLogOut,
     open,
     handleDrawerClose,
     handleDrawerOpen
@@ -23,17 +21,11 @@ const Appbar: React.FC<Props> = ({
 
     const classes = appBarTheme();
 
-    const _onLogOut = () => {
+    const onLogOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
     }
-
-    const [_open, setOpen] = React.useState(true);
-
-    const _handleDrawerOpen = () => setOpen(true);
-
-    const _handleDrawerClose = () => setOpen(false);
-
+    
     const TOKEN = localStorage.getItem('token')
 
     if (TOKEN) {
