@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 
-const drawerWidth = 180;
+const drawerWidth = 220;
 
 export const appBarTheme = makeStyles((theme) => ({
     root: {
@@ -13,7 +13,6 @@ export const appBarTheme = makeStyles((theme) => ({
         duration: theme.transitions.duration.leavingScreen,
       }),
       height: 55,
-      // background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
     },
     appBarShift: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -24,8 +23,24 @@ export const appBarTheme = makeStyles((theme) => ({
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
+    
     menuButton: {
       marginRight: theme.spacing(2),
+    },
+    
+    title: {
+      fontSize: 14,
+      fontWeight: 500,
+      marginLeft: 20
+    },
+    items: {
+      fontSize: 15,
+      marginTop: '0.2rem'
+    },
+    selected: {
+      backgroundColor: "rgb(197, 250, 211) !important",
+      color: "green",
+      fontWeight: 60
     },
     hide: {
       display: 'none',
@@ -61,4 +76,5 @@ export const appBarTheme = makeStyles((theme) => ({
       }),
       marginLeft: 0,
     },
+    
   }));

@@ -20,8 +20,9 @@ function CreateKey(props: Props) {
     APICreateKey(name, owner, expire)
       .then((results: any) => {
         if (results.status === 400) alert(results.data)
+        else if (results.status === 403) alert(results.data)
         else {
-          alert('created success')
+          alert('created success !')
           window.location.reload(false)
         }
       })

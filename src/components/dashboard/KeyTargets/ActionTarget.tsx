@@ -58,6 +58,7 @@ const onCellClicked = (params: any) => {
         // }
 
         if (action === "update") {
+            alert('sad')
             params.api.stopEditing(false);
         }
 

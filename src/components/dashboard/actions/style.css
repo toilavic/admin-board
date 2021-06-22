@@ -3,6 +3,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
+.fa fa-question-circle:hover {
+  background-color: red ;
+  color: red;
+}
+
 .modal {
     font-size: 12px;
   }

@@ -15,11 +15,13 @@ function CreateTarget(props: Props) {
     event.preventDefault();
     const name = event.target['name'].value
     const key = event.target['key'].value
-    const url = event.target['url'].value
+    const url =  "http://nmas.nome.fi:" +event.target['url'].value
     const details = event.target['details'].value
     APICreateTarget(key, name, url, details)
       .then((results: any) => {
+        console.log(results)
         if (results.status === 400) alert(results.data)
+        else if (results.status === 403) alert(results.data)
         else {
           alert('created success !')
           window.location.reload(false)
@@ -30,7 +32,7 @@ function CreateTarget(props: Props) {
   return (
     <>
       <Popup trigger={
-        <Tooltip title="Create a new key">
+        <Tooltip title="Create a new target">
           <IconButton>
             <Add />
           </IconButton>
@@ -53,8 +55,9 @@ function CreateTarget(props: Props) {
                   <input type="text" name="key" className="form-control" id="inputAddress2" placeholder='' />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="inputAddress2">URL</label>
-                  <input type="text" name="url" className="form-control" id="inputAddress2" placeholder='http://nmas.nome.fi:' defaultValue="http://nmas.nome.fi:"/>
+                  <label htmlFor="inputAddress2">Port</label>
+                  <i className="fa fa-question-circle" aria-hidden="true" title="Base url: http://nmas.nome.fi"></i>
+                  <input type="text" name="url" className="form-control" id="inputAddress2" placeholder='50000'/>
                 </div>
                 <div className="form-group">
                   <label htmlFor="inputAddress2">Details</label>

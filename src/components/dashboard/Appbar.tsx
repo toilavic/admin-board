@@ -8,48 +8,31 @@ import AppContent from './AppContent'
 import APIRefreshToken from '../../api/APIRefreshToken'
 
 interface Props {
+    onLogOut: () => void;
+    open: boolean;
+    handleDrawerOpen: () => void;
+    handleDrawerClose: () => void
 }
 
 const Appbar: React.FC<Props> = ({
+    onLogOut,
+    open,
+    handleDrawerClose,
+    handleDrawerOpen
 }) => {
 
     const classes = appBarTheme();
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleDrawerOpen = () => setOpen(true);
-
-    const handleDrawerClose = () => setOpen(false);
-
-    const onLogOut = () => {
+    const _onLogOut = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
     }
-    const getNewToken = () => {
-        var rToken = localStorage.getItem('refreshToken');
-        APIRefreshToken(rToken)
-            .then((results) => {
-                if (results === 401 || results === 403) {
-                    alert('Please login!')
-                    onLogOut()
-                    window.location.reload(false)
-                } else {
-                    localStorage.setItem('token', results.token)
-                }
-            })
-            .catch(error => console.error(error))
-    }
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            var token = localStorage.getItem('token');
-                if(token !== null) {
-                    getNewToken()
-                    console.log('This will run every 30 seconds!');
-                }
-            }, 30000);
-            return () => clearInterval(interval);
-    })
+    const [_open, setOpen] = React.useState(true);
+
+    const _handleDrawerOpen = () => setOpen(true);
+
+    const _handleDrawerClose = () => setOpen(false);
 
     const TOKEN = localStorage.getItem('token')
 
@@ -68,17 +51,6 @@ const Appbar: React.FC<Props> = ({
                     handleDrawerClose={handleDrawerClose}
                 />
 
-                <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes.drawerHeader} />
-
-                    {/* MAIN CONTENT */}
-                    <AppContent getNewToken = {getNewToken} />
-
-                </main>
             </div>
         );
     } else return (
