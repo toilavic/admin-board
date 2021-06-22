@@ -48,9 +48,10 @@ const Sidebar: React.FC<Props> = ({
                 <List component="nav" aria-label="main folders">
                     <ListItem
                         button
+                        component={NavLink} to={'/dashboard'}
                         classes={{ selected: classes.selected }}
                         selected={selectedIndex === 0}
-                        onClick={(event) => handleListItemClick(event, 0)}
+                        onClick={(event: any) => handleListItemClick(event, 0)}
                     >
                         <ListItemIcon>
                             <Timeline />

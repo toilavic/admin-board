@@ -47,7 +47,6 @@ const defaultColDef = {
 }
 
 const onRowValueChanged = (event: any) => {
-    // var expiredAt = new Date(event.data.expiresAt).toLocaleDateString();
     console.log(event.data)
     swal({
         title: "Are you sure to update this row?",
@@ -79,10 +78,11 @@ const KeyGrid: React.FC<Props> = ({ }) => {
     }, [])
 
     return (
-        <div className="ag-theme-alpine tcl-mask"
+        <div className="ag-theme-alpine tcl-mask container"
             style={{
                 width: '70%',
-                height: '500px'
+                height: '500px',
+                marginTop: '100px'
             }}
         >
             <h1>Available Keys</h1>
