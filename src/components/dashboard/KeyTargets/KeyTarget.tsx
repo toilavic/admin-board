@@ -24,9 +24,6 @@ const initColumnDefs = [
     { headerName: 'Name', field: 'name', sortable: true, filter: true ,  cellRenderer: onClickEdit()},
     { headerName: 'Details', field: 'details', sortable: true, filter: true },
     { headerName: 'URL', field: 'url', sortable: true, filter: true, width: 300 },
-    // { headerName: 'Key', field: 'owner', sortable: true, filter: true, editable: false },
-    // { headerName: 'Key Name', field: 'owner', sortable: true, filter: true, editable: false },
-    // { headerName: 'Key Owner', field: 'owner', sortable: true, filter: true, editable: false },
     {
         headerName: "Action",
         minWidth: 150,
@@ -40,11 +37,10 @@ const initColumnDefs = [
 const defaultColDef = {
     editable: true,
     width: 220,
+    resizable: true,
 }
 
 const onRowValueChanged = (event: any) => {
-    // var expiredAt = new Date(event.data.expiresAt).toLocaleDateString();
-    console.log(event.data)
     swal({
         title: "Are you sure to update this row?",
         icon: "warning",
@@ -54,12 +50,13 @@ const onRowValueChanged = (event: any) => {
     })
         .then(willDelete => {
             if (willDelete) {
-                console.log(event.data)
                 const { name, details, url, id } = event.data
                 APIUpdateTarget(name, details, url, id)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err))
-                swal("Updated!", "Your key has been updated!", "success");
+                .then((res) => {
+                    if(res.status === 403) swal("Error!", res.data, "warning")
+                    else swal("Updated!", res.data, "success")
+                })
+                .catch((err) => console.error(err))
             }
         });
 }
@@ -96,7 +93,9 @@ const KeyTarget: React.FC<Props> = ({ }) => {
                 defaultColDef={defaultColDef}
                 suppressClickEdit={true}
                 enableRangeSelection={true}
+                clipboardDeliminator={","}
                 onRowValueChanged={onRowValueChanged}
+                suppressCopyRowsToClipboard={true}
             />
 
         </div>

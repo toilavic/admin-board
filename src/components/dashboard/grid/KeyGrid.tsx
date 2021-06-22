@@ -85,6 +85,8 @@ const KeyGrid: React.FC<Props> = ({ }) => {
                 height: '500px'
             }}
         >
+            <h1>Available Keys</h1>
+            
             <AgGridReact
                 onRowEditingStopped={onRowEditingStopped}
                 onRowEditingStarted={onRowEditingStarted}
@@ -97,6 +99,7 @@ const KeyGrid: React.FC<Props> = ({ }) => {
                 suppressClickEdit={true}
                 enableRangeSelection={true}
                 onRowValueChanged={onRowValueChanged}
+                suppressCopyRowsToClipboard={true}
             />
 
         </div>

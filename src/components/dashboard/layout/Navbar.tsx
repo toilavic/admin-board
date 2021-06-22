@@ -27,6 +27,7 @@ const Navbar: React.FC<Props> = ({
                     [classes.appBarShift]: open,
                 })}
                 color="default"
+                style={{background: 'inherit', boxShadow : 'none'}}
             >
                 <Toolbar>
                     <IconButton
