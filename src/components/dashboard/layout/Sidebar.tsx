@@ -83,9 +83,10 @@ const Sidebar: React.FC<Props> = ({
 
                     <ListItem
                         button
+                        component={NavLink} to={'/dashboard/active-keys'}
                         classes={{ selected: classes.selected }}
                         selected={selectedIndex === 2}
-                        onClick={(event) => handleListItemClick(event, 2)}
+                        onClick={(event: any) => handleListItemClick(event, 2)}
                     >
                         <ListItemIcon>
                             <Storage />

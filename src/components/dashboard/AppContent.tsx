@@ -4,22 +4,17 @@ import CreateKey from './actions/CreateKey'
 import HeadingKeys from './progress/HeadingKeys'
 import HeadingActiveKeys from './progress/HeadingActiveKeys'
 import HeadingOwner from './progress/HeadingOwner'
-import KeyTarget from './KeyTargets/KeyTarget'
 import CreateTarget from './actions/CreateTarget'
 import { appBarTheme } from './appBarTheme'
 import './styles.css'
 
 interface Props {
-    getNewToken: () => void;
+    
 }
 
 const AppContent: React.FC<Props> = ({
-    getNewToken
+    
 }) => {
-
-    useEffect(() => {
-        getNewToken()
-    }, [])
 
     const classes = appBarTheme();
 
@@ -37,9 +32,7 @@ const AppContent: React.FC<Props> = ({
                 <CreateKey />
                 
                 <br />
-                <h1>Active Targets</h1>
                 <CreateTarget />
-                <KeyTarget />
             </div>
 
         </div>

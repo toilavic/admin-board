@@ -20,10 +20,10 @@ import APIUpdateTarget from '../../../api/APIUpdateTarget'
 interface Props { }
 
 const initColumnDefs = [
-    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false},
-    { headerName: 'Name', field: 'name', sortable: true, filter: true ,  cellRenderer: onClickEdit()},
-    { headerName: 'Details', field: 'details', sortable: true, filter: true },
-    { headerName: 'URL', field: 'url', sortable: true, filter: true, width: 300 },
+    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false, flex: 1 },
+    { headerName: 'Name', field: 'name', sortable: true, filter: true, flex: 1 },
+    { headerName: 'Details', field: 'details', sortable: true, filter: true, flex: 1 },
+    { headerName: 'URL', field: 'url', sortable: true, filter: true, flex: 1 },
     {
         headerName: "Action",
         minWidth: 150,
@@ -34,10 +34,15 @@ const initColumnDefs = [
     }
 ]
 
+var colSpan = function (params: any) {
+    return params.data === 2 ? 3 : 1;
+};
+
 const defaultColDef = {
     editable: true,
-    width: 220,
+    // width: 220,
     resizable: true,
+    colSpan: colSpan,
 }
 
 const onRowValueChanged = (event: any) => {
@@ -52,11 +57,11 @@ const onRowValueChanged = (event: any) => {
             if (willDelete) {
                 const { name, details, url, id } = event.data
                 APIUpdateTarget(name, details, url, id)
-                .then((res) => {
-                    if(res.status === 403) swal("Error!", res.data, "warning")
-                    else swal("Updated!", res.data, "success")
-                })
-                .catch((err) => console.error(err))
+                    .then((res) => {
+                        if (res.status === 403) swal("Error!", res.data, "warning")
+                        else swal("Updated!", res.data, "success")
+                    })
+                    .catch((err) => console.error(err))
             }
         });
 }
@@ -65,9 +70,25 @@ const KeyTarget: React.FC<Props> = ({ }) => {
 
     const [rowData, setRowData] = useState()
 
+
+
+    let TOKEN = localStorage.getItem('token')
+
+    const getTokenEveryTwoMinus = () => {
+        var newToken = localStorage.getItem('token')
+        return newToken;
+    }
+
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        APIGetTargets(token)
+        const interval = setInterval(() => {
+            getTokenEveryTwoMinus()
+            console.log('new token applied 2 mins ago !')
+        }, 120000);
+        return () => clearInterval(interval);
+    })
+
+    useEffect(() => {
+        APIGetTargets(TOKEN)
             .then((data) => {
                 console.log(data)
                 setRowData(data)
@@ -76,12 +97,15 @@ const KeyTarget: React.FC<Props> = ({ }) => {
     }, [])
 
     return (
-        <div className="ag-theme-alpine tcl-mask"
+        <div className="ag-theme-alpine container"
             style={{
-                width: '70%',
-                height: '500px'
+                width: '80%',
+                height: '500px',
+                marginTop: '100px'
             }}
         >
+            <h1>Active Targets</h1>
+
             <AgGridReact
                 onRowEditingStopped={onRowEditingStopped}
                 onRowEditingStarted={onRowEditingStarted}
@@ -96,6 +120,7 @@ const KeyTarget: React.FC<Props> = ({ }) => {
                 clipboardDeliminator={","}
                 onRowValueChanged={onRowValueChanged}
                 suppressCopyRowsToClipboard={true}
+                stopEditingWhenCellsLoseFocus={true}
             />
 
         </div>

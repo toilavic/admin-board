@@ -7,6 +7,7 @@ import NotFound from './NotFound'
 import Appbar from './dashboard/Appbar'
 import { appBarTheme } from './dashboard/appBarTheme'
 import clsx from 'clsx';
+import KeyTarget from './dashboard/KeyTargets/KeyTarget'
 
 interface Props {
 }
@@ -30,9 +31,10 @@ const Main: React.FC<Props> = ({ }) => {
                     <main className={clsx(classes.content, {
                     [classes.contentShift]: open,
                     })}>
-                        <Route path="/dashboard" exact render={(routeProps) => <Dashboard open={open} {...routeProps} />} />
+                        <Route path="/dashboard" exact render={(routeProps) => <Dashboard {...routeProps} />} />
                         {/* <Route component={NotFound} /> */}
                         <Route path="/dashboard/keys" render={(routeProps) => <KeyGrid  {...routeProps} />} />
+                        <Route path="/dashboard/active-keys" render={(routeProps) => <KeyTarget  {...routeProps} />} />
                     </main>
                     
                 </div>
