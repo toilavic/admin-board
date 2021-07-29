@@ -1,53 +1,39 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 300,
-    borderRadius: 40,
-    padding: 30,
-    lineHeight: 1.5,
-    boxShadow: `0px 2px 8px rgba(0,0,0,0.05)`
-    // textAlign: 'center'
-  },
-  keys : {
-    marginTop: 20
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 400
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+import React, { useEffect } from 'react';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { Card, CardActions, CardContent, Button, Typography} from '@material-ui/core';
+import { HeadingTheme } from './HeadingTheme';
+import APIGetKeys from '../../../api/APIGetKeys';
 
 export default function HeadingKeys() {
-  const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+
+  const classes = HeadingTheme();
+  const TOKEN = localStorage.getItem('token')
+
+  const [availableKeys, setAvailableKeys] = React.useState(0)
+
+  useEffect(() => {
+    APIGetKeys(TOKEN)
+        .then((data) => {
+          console.log('called')
+          console.log(data)
+          setAvailableKeys(data.length)
+        })
+        .catch((error) => console.log(error))
+})
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography className={classes.title}  gutterBottom>
+        <Typography className={classes.title} gutterBottom>
           Available Keys
         </Typography>
         <Typography className={classes.keys} variant="h4" component="h5">
-          15,534
+          {availableKeys}
+          <VpnKeyIcon className={classes.keyIcon}/>
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button href="/dashboard/keys" size="small">Learn More</Button>
       </CardActions>
     </Card>
     

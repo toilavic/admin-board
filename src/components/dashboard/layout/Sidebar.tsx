@@ -7,6 +7,7 @@ import { List, ListItem, ListItemIcon, ListItemText, Typography } from '@materia
 import { Timeline, VpnKey, Storage, ChevronLeft, ChevronRight } from '@material-ui/icons';
 
 import './style.css'
+import { useEffect } from 'react';
 
 interface Props {
     open: boolean,
@@ -25,6 +26,25 @@ const Sidebar: React.FC<Props> = ({
     const handleListItemClick = (event: any, index: number) => {
         setSelectedIndex(index);
     };
+
+    useEffect(() => {
+        console.log(window.location.pathname)
+        switch (window.location.pathname) {
+            case "/dashboard":
+                setSelectedIndex(0);
+                break;
+            case "/dashboard/keys":
+                setSelectedIndex(1);
+                break;
+            case "/dashboard/active-keys":
+                setSelectedIndex(2);
+                break;
+
+            default:
+                setSelectedIndex(0);
+                break;
+        }
+    }, [selectedIndex])
 
     return (
         <>

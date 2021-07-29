@@ -27,6 +27,8 @@ body {
 .progress {
     display: flex;
     color: #bdbdbd;
+    margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
 .progress .keys {
@@ -39,4 +41,13 @@ body {
 
 .progress .owner {
     flex: 1;
+}
+
+.progress .example {
+    flex: 1;
+}
+
+
+.grid {
+    margin-top: 1.5rem;
 }

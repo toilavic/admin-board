@@ -1,4 +1,5 @@
-// import './style.css'
+import swal from 'sweetalert';
+import APIDeleteTarget from '../../../api/APIDeleteTarget';
 
 const actionCellRenderer = (params: any) => {
     let eGui = document.createElement("div");   
@@ -11,12 +12,13 @@ const actionCellRenderer = (params: any) => {
 
     if (isCurrentRowEditing) {
         eGui.innerHTML = `
-    <i class="fa fa-check" data-action="update"></i>
+    <i class="fa fa-check" data-action="update" style="color:green"></i>
     <i class="fa fa-times" data-action="cancel"></i>
   `;
     } else {
         eGui.innerHTML = `
-    <i class="fa fa-edit" data-action="edit"></i>
+    <i class="fa fa-edit" data-action="edit" style="color:blue"></i>
+    <i class="fa fa-trash" data-action="delete" style="color:red"></i>
   `;
     }
 
@@ -36,26 +38,29 @@ const onCellClicked = (params: any) => {
             });
         }
 
-        // if (action === "delete") {
-        //     console.log(params.data)
-        //     const { name } = params.data
-        //     swal({
-        //         title: "Are you sure to delete this row?"+" Name: " +name,
-        //         text: "Once deleted, you will not be able to recover this key!",
-        //         icon: "warning",
-        //         // @ts-ignore
-        //         buttons: true,
-        //         dangerMode: true,
-        //     })
-        //         .then(willDelete => {
-        //             if (willDelete) {
-        //                 swal("Deleted!", "Your key has been deleted!", "success");
-        //                 params.api.applyTransaction({
-        //                     remove: [params.node.data]
-        //                 });
-        //             }
-        //         });
-        // }
+        if (action === "delete") {
+            console.log(params.data)
+            const { id, name } = params.data
+            swal({
+                title: "Are you sure to delete this row?"+" Name: " +name,
+                text: "Once deleted, you will not be able to recover this key!",
+                icon: "warning",
+                // @ts-ignore
+                buttons: true,
+                dangerMode: true,
+            })
+                .then(willDelete => {
+                    if (willDelete) {
+                        APIDeleteTarget(id)
+                        .then(result => console.log(result))
+                        .catch(error => console.error(error))
+                        swal("Deleted!", "Your key has been deleted!", "success");
+                        params.api.applyTransaction({
+                            remove: [params.node.data]
+                        });
+                    }
+                });
+        }
 
         if (action === "update") {
             alert('sad')
