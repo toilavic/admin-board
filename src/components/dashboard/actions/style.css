@@ -8,6 +8,19 @@
   color: red;
 }
 
+.btn-copy {
+  border-color: #bdbdbd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  /* border: none; */
+  background-color: inherit;
+  color: var(--text-color);  
+}
+
+.txt-key {
+  margin-top: 10px;
+}
+
 .modal {
     font-size: 12px;
   }
@@ -42,3 +55,4 @@
     border-radius: 18px;
     border: 1px solid #cfcece;
   }
+

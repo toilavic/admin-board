@@ -26,8 +26,13 @@ const initColumnDefs = [
     {
         headerName: 'Expires at', field: 'expiresAt', sortable: true, filter: true, flex: 1.5, maxWidth: 400, cellEditor: "datePicker", 
         valueFormatter: (params: any) => {
+
+            var today = new Date().toISOString().substring(0, 10)
             var localDateTime = new Date(params.value).toISOString().substring(0, 10);
-            return localDateTime
+            
+            var diff =  Math.floor(( Date.parse(localDateTime) - Date.parse(today) ) / 86400000); 
+            
+            return localDateTime + ' (' + diff + ' days left)'
         }
     },
     {

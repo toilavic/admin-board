@@ -1,8 +1,7 @@
-import React from 'react'
 import './style.css'
 import Popup from 'reactjs-popup';
 import { Tooltip, IconButton, Button } from "@material-ui/core";
-import Add from '@material-ui/icons/Add';
+import { Storage } from '@material-ui/icons';
 import APICreateTarget from '../../../api/APICreateTarget'
 import 'reactjs-popup/dist/index.css';
 
@@ -34,7 +33,7 @@ function CreateTarget(props: Props) {
       <Popup trigger={
         <Tooltip title="Create a new target">
           <IconButton>
-            <Add />
+            <Storage />
           </IconButton>
         </Tooltip>} modal>
         {(close: any) => (

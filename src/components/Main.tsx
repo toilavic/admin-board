@@ -8,6 +8,8 @@ import Appbar from './dashboard/Appbar'
 import { appBarTheme } from './dashboard/appBarTheme'
 import clsx from 'clsx';
 import KeyTarget from './dashboard/KeyTargets/KeyTarget'
+import { useEffect } from 'react'
+import APIRefreshToken from '../api/APIRefreshToken'
 
 interface Props {
 }
@@ -21,12 +23,49 @@ const Main: React.FC<Props> = ({ }) => {
 
     const handleDrawerClose = () => setOpen(false);
 
+    const onLogOut = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+    }
+
+    const refreshTokenInEveryThirtySeconds = () => {
+        var rToken = localStorage.getItem('refreshToken');
+        APIRefreshToken(rToken)
+            .then((results) => {
+                if (results === 401 || results === 403) {
+                    alert('Please login!')
+                    onLogOut()
+                    window.location.reload(false)
+                } else {
+                    localStorage.setItem('token', results.token)
+                }
+            })
+            .catch(error => console.error(error))
+    }
+
+    const TOKEN = localStorage.getItem('token')
+
+    useEffect(() => {
+        // called at the first render
+        if (TOKEN) refreshTokenInEveryThirtySeconds(); 
+        // set timer for 30 seconds call....
+        const interval = setInterval(() => {
+            if (TOKEN !== null) {
+                refreshTokenInEveryThirtySeconds()
+                console.log('Applied refreshTokenInEveryThirtySeconds!');
+            }
+        }, 30000);
+        return () => clearInterval(interval);
+    })
+
     return (
         <>
             <Switch>
                 <Route exact path="/" render={(routeProps) => <Login {...routeProps} onLoginRedirect="/dashboard" />} />
                 <div>
-                    <Appbar open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                    <Appbar open={open} handleDrawerOpen={handleDrawerOpen} 
+                                        handleDrawerClose={handleDrawerClose}
+                                        onLogOut = {onLogOut} />
                     
                     <main className={clsx(classes.content, {
                     [classes.contentShift]: open,

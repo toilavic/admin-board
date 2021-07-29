@@ -13,12 +13,12 @@ const actionCellRenderer = (params: any) => {
 
     if (isCurrentRowEditing) {
         eGui.innerHTML = `
-    <i class="fa fa-check" data-action="update"></i>
+    <i class="fa fa-check" data-action="update" style="color:green"></i>
     <i class="fa fa-times" data-action="cancel"></i>
   `;
     } else {
         eGui.innerHTML = `
-    <i class="fa fa-edit" data-action="edit"></i>
+    <i class="fa fa-edit" data-action="edit" style="color:blue"></i>
   `;
     }
 
