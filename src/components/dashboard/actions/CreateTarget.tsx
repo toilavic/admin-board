@@ -41,26 +41,25 @@ function CreateTarget(props: Props) {
             <button className="close" onClick={close}>
               &times;
             </button>
-            <div className="header"> Add a new key </div>
+            <div className="header"> Add a new target </div>
             <div className="content">
               {/* form */}
               <form onSubmit={onSubmit}>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress">Name</label>
-                  <input type="text" name="name" className="form-control" id="inputAddress" placeholder='' />
+                  <input type="text" name="name" placeholder='' />
                 </div>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress2">Key</label>
-                  <input type="text" name="key" className="form-control" id="inputAddress2" placeholder='' />
+                  <input type="text" name="key" placeholder='' />
                 </div>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress2">Port</label>
-                  <i className="fa fa-question-circle" aria-hidden="true" title="Base url: http://nmas.nome.fi"></i>
-                  <input type="text" name="url" className="form-control" id="inputAddress2" placeholder='50000'/>
+                  <input type="text" name="url" placeholder='50000'/>
                 </div>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress2">Details</label>
-                  <input type="text" name="details" className="form-control" id="inputAddress2" placeholder='' />
+                  <input type="text" name="details" placeholder='' />
                 </div>
                 <Button style = {{marginTop: '20px'}} type="submit" variant="contained" color="primary">Submit</Button>
               </form>

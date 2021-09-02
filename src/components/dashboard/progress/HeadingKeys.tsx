@@ -14,8 +14,6 @@ export default function HeadingKeys() {
   useEffect(() => {
     APIGetKeys(TOKEN)
         .then((data) => {
-          console.log('called')
-          console.log(data)
           setAvailableKeys(data.length)
         })
         .catch((error) => console.log(error))

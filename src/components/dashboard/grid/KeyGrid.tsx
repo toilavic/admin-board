@@ -19,7 +19,6 @@ import APIUpdateKey from '../../../api/APIUpdateKey'
 interface Props { }
 
 const initColumnDefs = [
-    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false, flex: 1 },
     { headerName: 'Key', field: 'key', sortable: true, filter: true, editable: false, flex: 2 },
     { headerName: 'Name', field: 'name', sortable: true, filter: true, flex: 1 },
     { headerName: 'Owner', field: 'owner', sortable: true, filter: true, editable: false, flex: 1 },
@@ -88,7 +87,6 @@ const KeyGrid: React.FC<Props> = ({ }) => {
     }
 
     useEffect(() => {
-        console.log('get new token')
         APIGetKeys(TOKEN)
             .then((data) => setRowData(data))
             .catch((error) => console.log(error))
@@ -126,6 +124,7 @@ const KeyGrid: React.FC<Props> = ({ }) => {
                 enableRangeSelection={true}
                 onRowValueChanged={onRowValueChanged}
                 suppressCopyRowsToClipboard={true}
+                domLayout="autoHeight"
                 // stopEditingWhenCellsLoseFocus={true}
                 components = {{ datePicker: getDatePicker() }}
             />

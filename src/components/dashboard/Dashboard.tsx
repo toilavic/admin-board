@@ -26,8 +26,6 @@ const AppContent: React.FC<Props> = ({
             <div className="progress">
                 <div className="keys"><HeadingKeys /></div>
                 <div className="active-keys"><HeadingActiveKeys /></div>
-                <div className="owner"><HeadingOwner /></div>
-                <div className="example"><HeadingExample /></div>
             </div>
             <div className="grid">
                 <Actions />

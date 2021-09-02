@@ -20,8 +20,8 @@ import APIUpdateTarget from '../../../api/APIUpdateTarget'
 interface Props { }
 
 const initColumnDefs = [
-    { headerName: 'ID', field: 'id', sortable: true, filter: true, editable: false, flex: 1 },
-    { headerName: 'Name', field: 'name', sortable: true, filter: true, flex: 1 },
+    { headerName: 'Name', field: 'name', sortable: true, filter: true},
+    { headerName: 'Key', field: 'key', editable: false,  sortable: true, filter: true, flex: 1 ,  valueGetter: (params: any) => params.data.key.key },
     { headerName: 'Details', field: 'details', sortable: true, filter: true, flex: 1 },
     { headerName: 'URL', field: 'url', sortable: true, filter: true, flex: 1 },
     {
@@ -121,6 +121,7 @@ const KeyTarget: React.FC<Props> = ({ }) => {
                 onRowValueChanged={onRowValueChanged}
                 suppressCopyRowsToClipboard={true}
                 stopEditingWhenCellsLoseFocus={true}
+                domLayout="autoHeight"
             />
 
         </div>
