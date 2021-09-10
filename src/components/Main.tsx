@@ -3,13 +3,11 @@ import { Switch, Route } from 'react-router-dom'
 import Login from './auth/Login'
 import Dashboard from './dashboard/Dashboard'
 import KeyGrid from './dashboard/grid/KeyGrid'
-import NotFound from './NotFound'
+// import NotFound from './NotFound'
 import Appbar from './dashboard/Appbar'
 import { appBarTheme } from './dashboard/appBarTheme'
 import clsx from 'clsx';
 import KeyTarget from './dashboard/KeyTargets/KeyTarget'
-import { useEffect } from 'react'
-import APIRefreshToken from '../api/APIRefreshToken'
 
 interface Props {
 }
@@ -19,8 +17,6 @@ const Main: React.FC<Props> = ({ }) => {
 
     const [open, setOpen] = React.useState(true);
 
-    const [_token, _setToken] = React.useState('');
-
     const handleDrawerOpen = () => setOpen(true);
 
     const handleDrawerClose = () => setOpen(false);
@@ -29,45 +25,6 @@ const Main: React.FC<Props> = ({ }) => {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
     }
-
-    const refreshTokenInEveryThirtySeconds = () => {
-        var rToken = localStorage.getItem('refreshToken');
-        APIRefreshToken(rToken)
-            .then((results) => {
-                if (results === 401 || results === 403) {
-                    alert('Please login!')
-                    onLogOut()
-                    window.location.reload(false)
-                } else {
-                    console.log(results.token)
-                    _setToken(results.token);
-                    localStorage.setItem('token', results.token)
-                }
-            })
-            .catch(error => console.error(error))
-    }
-
-    const isTokenValid = (fn: () => void) => {
-
-    }
-
-    const TOKEN = localStorage.getItem('token')
-
-    useEffect(() => {
-        // called at the first render
-        if (TOKEN) {
-            console.log('FIRST RENDER...GET NET TOKEN...')
-            refreshTokenInEveryThirtySeconds();
-        }
-        // set timer for 30 seconds call....
-        const interval = setInterval(() => {
-            if (TOKEN !== null) {
-                refreshTokenInEveryThirtySeconds()
-                console.log('Applied refreshTokenInEveryThirtySeconds!');
-            }
-        }, 30000);
-        return () => clearInterval(interval);
-    })
 
     return (
         <>

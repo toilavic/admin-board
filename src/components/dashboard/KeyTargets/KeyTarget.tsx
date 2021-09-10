@@ -4,7 +4,6 @@ import {
     onCellClicked,
     onRowEditingStarted,
     onRowEditingStopped,
-    onClickEdit
 } from './ActionTarget'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -16,14 +15,19 @@ import swal from 'sweetalert';
 import APIGetTargets from '../../../api/APIGetTargets'
 import APIUpdateTarget from '../../../api/APIUpdateTarget'
 
+import OpenEmail from '../grid/OpenEmail';
+import { CellClickedEvent } from 'ag-grid-community';
+import InfoIcon from '@material-ui/icons/Info';
+
+import './style.css'
 
 interface Props { }
 
 const initColumnDefs = [
-    { headerName: 'Name', field: 'name', sortable: true, filter: true},
+    { headerName: 'Name', field: 'name', sortable: true, filter : "agTextColumnFilter", floatingFilter: true},
     { headerName: 'Key', field: 'key', editable: false,  sortable: true, filter: true, flex: 1 ,  valueGetter: (params: any) => params.data.key.key },
     { headerName: 'Details', field: 'details', sortable: true, filter: true, flex: 1 },
-    { headerName: 'URL', field: 'url', sortable: true, filter: true, flex: 1 },
+    { headerName: 'URL', field: 'url', sortable: true, flex: 1, filter : "agTextColumnFilter", floatingFilter: true },
     {
         headerName: "Action",
         minWidth: 150,
@@ -69,23 +73,15 @@ const onRowValueChanged = (event: any) => {
 const KeyTarget: React.FC<Props> = ({ }) => {
 
     const [rowData, setRowData] = useState()
+    const [show, onSetShow] = useState(false)
+    const [selectedKey, setSelectedKey] = useState('')
 
-
-
-    let TOKEN = localStorage.getItem('token')
-
-    const getTokenEveryTwoMinus = () => {
-        var newToken = localStorage.getItem('token')
-        return newToken;
+    const onCellDoubleClicked = (params: CellClickedEvent) => {
+        setSelectedKey(params.value)
+        onSetShow(true)
     }
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            getTokenEveryTwoMinus()
-            console.log('new token applied 2 mins ago !')
-        }, 120000);
-        return () => clearInterval(interval);
-    })
+    
+    let TOKEN = localStorage.getItem('token')
 
     useEffect(() => {
         APIGetTargets(TOKEN)
@@ -101,15 +97,26 @@ const KeyTarget: React.FC<Props> = ({ }) => {
             style={{
                 width: '80%',
                 height: '500px',
-                marginTop: '100px'
+                marginTop: '3rem',
+                marginLeft: '0px'
             }}
-        >
-            <h1>Active Targets</h1>
-
+        >            
+            <div id="containerIntro">
+                <h1>Active Targets</h1>
+                &nbsp;
+                <p className="tooltip"><InfoIcon color="primary"/>
+                    <span className="tooltiptext"><b>Double click</b> in <b> key</b> to show the user information!</span>
+                </p>
+            </div>
+            {show && <OpenEmail show={show} onSetShow={onSetShow} selectedKey = {selectedKey}/>}
             <AgGridReact
                 onRowEditingStopped={onRowEditingStopped}
                 onRowEditingStarted={onRowEditingStarted}
                 onCellClicked={onCellClicked}
+                onCellDoubleClicked = {onCellDoubleClicked}
+                overlayLoadingTemplate={
+                    '<span className="ag-overlay-loading-center">Please wait while your rows are loading</span>'
+                }
                 columnDefs={initColumnDefs}
                 rowData={rowData}
                 rowSelection="multiple"

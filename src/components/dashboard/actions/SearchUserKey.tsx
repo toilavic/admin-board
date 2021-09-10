@@ -1,22 +1,24 @@
 import './style.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Popup from 'reactjs-popup';
 import { Tooltip, IconButton, Button } from "@material-ui/core";
-import APIGetUserByKey from '../../../api/APIGetUserByKey'
 import SearchIcon from '@material-ui/icons/Search';
 import 'reactjs-popup/dist/index.css';
-import UserGrid from './UserGrid'
-interface Props { }
 
-interface result {
-    name: string,
-    email: string
-}
+import APIGetUserByKey from '../../../api/APIGetUserByKey'
+import APIGetAllUsers from '../../../api/APIGetAllUsers';
+
+import ShowAllUsers from './ShowAllUsers';
+import UserGrid from './UserGrid';
+
+
+interface Props { }
 
 function SearchUserKey(props: Props) {
 
+    const [allUsers, setAllUser] = React.useState([])
     const [usersInfo, setUsersInfo] = React.useState([]);
-    const { } = props
+    const [onShowAllUsers, setOnShowAllUsers] = React.useState(false)
 
     const onSubmit = (event: any) => {
         event.preventDefault();
@@ -29,6 +31,14 @@ function SearchUserKey(props: Props) {
             })
     }
 
+    const onShowUsers = () => {
+        APIGetAllUsers()
+        .then((result) => setAllUser(result))
+        .catch((error) => console.log('SHOW USERS ERROR' , error))
+        setOnShowAllUsers(!onShowAllUsers)
+    }
+    
+
     return (
         <>
             <Popup trigger={
@@ -36,7 +46,7 @@ function SearchUserKey(props: Props) {
                     <IconButton>
                         <SearchIcon />
                     </IconButton>
-                </Tooltip>} modal>
+                </Tooltip>} modal closeOnDocumentClick = {false}>
                 {(close: any) => (
                     <div className="modal">
                         <button className="close" onClick={close}>
@@ -44,13 +54,28 @@ function SearchUserKey(props: Props) {
                         </button>
                         <div className="header"> Search users by key </div>
                         <div>
-                            {/* form */}
+                            {/* form - FOR ONLY KEYS SEARCHING*/}
                             <form onSubmit={onSubmit}>
                                 <br />
-                                Key: <input type="text" name="key" className="form-control key-input" id="inputAddress" placeholder='' /> 	&nbsp;
-                                <Button type="submit" variant="contained" color="primary"><SearchIcon /></Button>
+                                <>Key: <input type="text" name="key" className="form-control key-input" id="inputAddress" placeholder='' />&nbsp; </>
+                                <Button type="submit" variant="contained" color="primary" onClick={() => setOnShowAllUsers(false)}><SearchIcon /></Button>
+                                <Button style={{ float: 'right', marginRight: '7.5rem' }} type="submit" variant="contained" color="primary" onClick={onShowUsers}>
+                                    {onShowAllUsers ? 'Hide' : 'Show'} all users</Button>
+                                    {
+                                        onShowAllUsers && <div>
+                                            {/* form - FOR ALL KEYS SEARCHING*/}
+                                            <ShowAllUsers usersInfo={allUsers} />
+                                            <br />
+                                        </div>
+                                    }
+                                    
+                                    {
+                                        !onShowAllUsers && <div>
+                                            <UserGrid usersInfo={usersInfo} />
+                                            <br />
+                                        </div>
+                                    }
 
-                                <UserGrid usersInfo={usersInfo} />
                                 <br />
                             </form>
                         </div>

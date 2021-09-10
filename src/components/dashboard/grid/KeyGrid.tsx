@@ -15,6 +15,9 @@ import swal from 'sweetalert';
 
 import APIGetKeys from '../../../api/APIGetKeys'
 import APIUpdateKey from '../../../api/APIUpdateKey'
+import { CellClickedEvent } from 'ag-grid-community';
+
+import OpenEmail from './OpenEmail';
 
 interface Props { }
 
@@ -48,6 +51,7 @@ var colSpan = function (params: any) {
     return params.data === 2 ? 3 : 1;
 };
 
+
 const defaultColDef = {
     editable: true,
     width: 220,
@@ -79,11 +83,14 @@ const KeyGrid: React.FC<Props> = ({ }) => {
 
     const [rowData, setRowData] = useState()
 
+    const [show, onSetShow] = useState(false)
+    const [selectedKey, setSelectedKey] = useState('')
+
     let TOKEN = localStorage.getItem('token')
 
-    const getTokenEveryTwoMinus = () => {
-        var newToken = localStorage.getItem('token')
-        return newToken;
+    const onCellDoubleClicked = (params: CellClickedEvent) => {
+        setSelectedKey(params.value)
+        onSetShow(true)
     }
 
     useEffect(() => {
@@ -91,15 +98,6 @@ const KeyGrid: React.FC<Props> = ({ }) => {
             .then((data) => setRowData(data))
             .catch((error) => console.log(error))
     }, [])
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            getTokenEveryTwoMinus()
-            console.log('new token applied 2 mins ago !')
-        }, 120000);
-        return () => clearInterval(interval);
-    })
-
 
     return (
         <div className="ag-theme-alpine container"
@@ -110,11 +108,12 @@ const KeyGrid: React.FC<Props> = ({ }) => {
             }}
         >
             <h1>Available Keys</h1>
-
+            {show && <OpenEmail show={show} onSetShow={onSetShow} selectedKey = {selectedKey}/>}
             <AgGridReact
                 onRowEditingStopped={onRowEditingStopped}
                 onRowEditingStarted={onRowEditingStarted}
                 onCellClicked={onCellClicked}
+                onCellDoubleClicked = {onCellDoubleClicked}
                 columnDefs={initColumnDefs}
                 rowData={rowData}
                 rowSelection="multiple"

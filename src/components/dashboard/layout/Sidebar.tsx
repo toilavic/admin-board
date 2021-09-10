@@ -4,7 +4,9 @@ import { appBarTheme } from '../appBarTheme'
 import { useTheme } from '@material-ui/core/styles';
 import { Drawer, IconButton } from '@material-ui/core';
 import { List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
-import { Timeline, VpnKey, Storage, ChevronLeft, ChevronRight } from '@material-ui/icons';
+import { Timeline, VpnKey, ChevronLeft, ChevronRight } from '@material-ui/icons';
+import APIRefreshToken from '../../../api/APIRefreshToken'
+import APIGetKeys from '../../../api/APIGetKeys'
 
 import './style.css'
 import { useEffect } from 'react';
@@ -12,10 +14,12 @@ import { useEffect } from 'react';
 interface Props {
     open: boolean,
     handleDrawerClose: () => void;
+    onLogOut: () => void;
 }
 const Sidebar: React.FC<Props> = ({
     open,
-    handleDrawerClose
+    handleDrawerClose,
+    onLogOut
 }) => {
 
     const classes = appBarTheme();
@@ -28,7 +32,6 @@ const Sidebar: React.FC<Props> = ({
     };
 
     useEffect(() => {
-        console.log(window.location.pathname)
         switch (window.location.pathname) {
             case "/dashboard":
                 setSelectedIndex(0);
@@ -36,15 +39,75 @@ const Sidebar: React.FC<Props> = ({
             case "/dashboard/keys":
                 setSelectedIndex(1);
                 break;
-            case "/dashboard/active-keys":
-                setSelectedIndex(2);
-                break;
+            // case "/dashboard/active-keys":
+            //     setSelectedIndex(2);
+            //     break;
 
             default:
                 setSelectedIndex(0);
                 break;
         }
     }, [selectedIndex])
+
+
+    // IMPLEMENT THE REFRESH TOKEN
+
+    useEffect(() => {
+        var token = localStorage.getItem('token')
+        var rToken = localStorage.getItem('refreshToken')
+        APIGetKeys(token)
+            .then(result => {
+                if (result === undefined) {
+                    // if token is invalid => get new token and set it
+                    APIRefreshToken(rToken)
+                        .then((result: any) => {
+                            if (result === 403) {
+                                onLogOut();
+                                // @ts-ignore
+                                window.location.reload(false);
+                            }
+                            else {
+                                localStorage.setItem('token', result.token)
+                                // @ts-ignore
+                                window.location.reload(false);
+                            }
+                        })
+                } else {
+                    console.log('token is OKay')
+                }
+            })
+            .catch(error => console.log(error))
+    }, [])
+
+
+
+    useEffect(() => {
+        var token = localStorage.getItem('token')
+        var rToken = localStorage.getItem('refreshToken')
+        APIGetKeys(token)
+            .then(result => {
+                if (result === undefined) {
+                    // if token is invalid => get new token and set it
+                    APIRefreshToken(rToken)
+                        .then((result: any) => {
+                            if (result === 403) {
+                                onLogOut();
+                                // @ts-ignore
+                                window.location.reload(false);
+                            }
+                            else {
+                                localStorage.setItem('token', result.token)
+                                // @ts-ignore
+                                window.location.reload(false);
+                            }
+                        })
+                } else {
+                    console.log('token is OK')
+                }
+            })
+            .catch(error => console.log(error))
+    }, [selectedIndex])
+
 
     return (
         <>
@@ -101,7 +164,7 @@ const Sidebar: React.FC<Props> = ({
                         </Typography>} />
                     </ListItem>
 
-                    <ListItem
+                    {/* <ListItem
                         button
                         component={NavLink} to={'/dashboard/active-keys'}
                         classes={{ selected: classes.selected }}
@@ -114,7 +177,7 @@ const Sidebar: React.FC<Props> = ({
                         <ListItemText primary={<Typography className={classes.items} color="textSecondary" gutterBottom>
                             Active Targets
                         </Typography>} />
-                    </ListItem>
+                    </ListItem> */}
                 </List>
             </Drawer>
         </>
@@ -122,3 +185,4 @@ const Sidebar: React.FC<Props> = ({
 }
 
 export default Sidebar;
+

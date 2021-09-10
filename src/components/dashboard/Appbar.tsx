@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Redirect } from "react-router-dom";
 import { appBarTheme } from './appBarTheme'
 import Navbar from './layout/Navbar'
 import Sidebar from './layout/Sidebar'
-import APIRefreshToken from '../../api/APIRefreshToken'
 
 interface Props {
     open: boolean;
@@ -14,9 +13,9 @@ interface Props {
 
 const Appbar: React.FC<Props> = ({
     open,
+    onLogOut,
     handleDrawerClose,
-    handleDrawerOpen,
-    onLogOut
+    handleDrawerOpen
 }) => {
 
     const classes = appBarTheme()
@@ -36,6 +35,7 @@ const Appbar: React.FC<Props> = ({
                 <Sidebar
                     open={open}
                     handleDrawerClose={handleDrawerClose}
+                    onLogOut={onLogOut}
                 />
 
             </div>

@@ -16,6 +16,11 @@
   background-color: inherit;
   color: var(--text-color);  
 }
+/* 
+
+.ag-body-viewport {
+  overflow-y: scroll !important;
+}   */
 
 .txt-key {
   margin-top: 10px;
