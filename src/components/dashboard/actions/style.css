@@ -16,9 +16,26 @@
   background-color: inherit;
   color: var(--text-color);  
 }
+/* 
+
+.ag-body-viewport {
+  overflow-y: scroll !important;
+}   */
 
 .txt-key {
   margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+}
+
+.user-info {
+  display: flex;
+}
+
+.key-input {
+  margin-left: 10px;
 }
 
 .modal {
@@ -30,12 +47,18 @@
     font-size: 25px;
     text-align: center;
     padding: 5px;
+    margin-top: 10px;
   }
   .modal > .content {
     width: 200px;
     padding: 20px 20px;
     margin: 0.5rem 10rem
     }
+    .modal > .content-search {
+      width: 200px;
+      padding: 20px 20px;
+      margin: 0.5rem
+      }
   .modal > .actions {
     width: 100%;
     padding: 10px 5px;

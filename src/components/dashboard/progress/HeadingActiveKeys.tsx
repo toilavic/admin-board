@@ -29,7 +29,7 @@ export default function HeadingKeys() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button href="/dashboard/active-keys" size="small">Learn More</Button>
+        <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
     

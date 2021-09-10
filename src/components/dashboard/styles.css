@@ -26,7 +26,6 @@ body {
 
 .progress {
     display: flex;
-    color: #bdbdbd;
     margin-top: 1rem;
     flex-wrap: wrap;
 }
@@ -39,15 +38,6 @@ body {
     flex: 1;
 }
 
-.progress .owner {
+.progress .tools {
     flex: 1;
-}
-
-.progress .example {
-    flex: 1;
-}
-
-
-.grid {
-    margin-top: 1.5rem;
 }

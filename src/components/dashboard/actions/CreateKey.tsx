@@ -77,19 +77,19 @@ function CreateKey(props: Props) {
             <div className="content">
               {/* form */}
               <form onSubmit={onSubmit}>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress">Name</label>
-                  <input type="text" name="name" className="form-control" id="inputAddress" placeholder='' />
+                  <input type="text" name="name"  placeholder='' />
                 </div>
-                <div className="form-group">
+                <div>
                   <label htmlFor="inputAddress2">Owner</label>
-                  <input type="text" name="owner" className="form-control" id="inputAddress2" placeholder='' />
+                  <input type="text" name="owner" placeholder='' />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="inputAddress2">Expires At</label>
-                  <input id="party" name="expire" type="datetime-local" defaultValue="2022-01-01T00:00" />
-                </div>
+                <div >
+                  Expires At
+                  <input name="expire" type="datetime-local" defaultValue="2022-01-01T00:00" />
                 <Button style={{ marginTop: '20px' }} type="submit" variant="contained" color="primary">Submit</Button>
+              </div>
               </form>
             </div>
             <button className="close" onClick={() => { close() }}>&times;</button>

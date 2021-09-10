@@ -1,13 +1,11 @@
 import React from 'react'
 import HeadingKeys from './progress/HeadingKeys'
 import HeadingActiveKeys from './progress/HeadingActiveKeys'
-import HeadingOwner from './progress/HeadingOwner'
-import HeadingExample from './progress/HeadingExample'
 import { appBarTheme } from './appBarTheme'
 import Actions from './actions'
+import KeyTarget from './KeyTargets/KeyTarget'
 
 import './styles.css'
-import { useEffect } from 'react'
 
 interface Props {
 }
@@ -26,11 +24,10 @@ const AppContent: React.FC<Props> = ({
             <div className="progress">
                 <div className="keys"><HeadingKeys /></div>
                 <div className="active-keys"><HeadingActiveKeys /></div>
-                <div className="owner"><HeadingOwner /></div>
-                <div className="example"><HeadingExample /></div>
+                <div className="tools"><Actions /></div>
             </div>
-            <div className="grid">
-                <Actions />
+            <div>
+                <KeyTarget/>
             </div>
 
         </div>
